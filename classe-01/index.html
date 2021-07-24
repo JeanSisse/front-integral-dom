@@ -10,7 +10,7 @@
     <title>Slider</title>
 </head>
 
-<body>
+<body onload="onLoad()">
     <div class="content-wrapper">
         <div class="text-wrapper">
             <p class="review-text">“Estive interessada em código por um tempo mas não tomava uma atitude, até agora. Não consigo recomendar esse curso o suficiente. Estou no trabalho dos meu sonhos e vejo um futuro brilhante!”</p>
@@ -44,6 +44,58 @@
         descricao: '“Se você quiser ter a melhor base possível, recomendo fazer este curso. A profundidade em que os instrutores entram é incrível. Agora me sinto muito confiante em começar como um desenvolvedor profissional.”',
         foto: './assets/joao.jpg'
     }];
+
+    let posicao = undefined;
+    let posicaoAtual = undefined;
+
+    /*
+    *   Função para atualizar o objeto pessoa recebido como argumento
+    *   para a proxmia pessoa ou para pessoa anterior
+    */
+    function updateObjPessoa(pessoa){
+        let caroucelImg = document.querySelector(".carousel__img");
+        let reviewText = document.querySelector(".review-text");
+        let authorName = document.querySelector(".author__name");
+        let authorTitle = document.querySelector(".author__title");
+
+        caroucelImg.src = pessoa.foto;
+        reviewText.textContent = pessoa.descricao;
+        authorName.textContent = pessoa.nome;
+        authorTitle.textContent = pessoa.profissao;
+    }
+
+    function getPessoa(pessoaIndex) {
+        let pessoa = pessoas[pessoaIndex];
+        updateObjPessoa(pessoa);
+        // return pessoa;
+    }
+
+    /*
+    *   Faz a verificação se a posição anterior a ser fornecido não é negativo
+    *   e passa o proximo indice de acordo
+    */
+    function pessoaAnterior(){
+        posicaoAtual = (posicaoAtual - 1) < 0 ? (pessoas.length - 1) : (posicaoAtual - 1);
+        getPessoa(posicaoAtual);
+    }
+
+    /*
+    *   Faz a verificação se a proxima posição não ultrapassa o tamanho
+    *   do array e passa o proximo indice de acordo
+    */
+    function proximaPessoa(){
+        posicaoAtual = posicaoAtual === (pessoas.length - 1) ? 0 : (posicaoAtual + 1);
+        getPessoa(posicaoAtual);
+    }
+
+    /*
+    * Pega a posição atual do array no carregamento da página
+    * Chamada no body do html
+    */
+    function onLoad() {
+        let authorName = document.querySelector(".author__name");
+        posicaoAtual = pessoas.reduce((acc, currentVal, index) => acc.nome === authorName.textContent ? (index - 1) : -1);
+    }
 </script>
 
 </html>
